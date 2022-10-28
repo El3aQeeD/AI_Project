@@ -79,4 +79,5 @@ while True:
                 pygame.draw.rect(surface, wall_color, pygame.Rect(x[i].x, x[i].y, x[i].wd - 2, x[i].ht - 2))
 
 #khalid
+
     pygame.display.flip()
