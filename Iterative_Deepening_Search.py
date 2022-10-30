@@ -82,26 +82,28 @@ def fringe_Check():
 
     for x in mylist:
         print(f"check lev {x.level} and curr lev {level}")
-        if x.level < level: # if node level less than the searching level
-            if visited_Node_check(x) == False: # call function to check the node if it is not visited
+         # if node level less than the searching level
+        if visited_Node_check(x) == False: # call function to check the node if it is not visited
 
-                if x == largeList[end_r][end_c]: # if node equal to goal postion return true
-                    print("found it")
-                    return True
-                else: # if node not equal the goal
+            if x == largeList[end_r][end_c]: # if node equal to goal postion return true
+                print("found it")
+                return True
+            else:
+                if x.level < level:# if node not equal the goal
                     expand_Node(x) # call function to expand node
                     print("3alih eldor")
                     print(x.row)
                     print(x.coloum)
                     fringe.remove(x) # delete node after expanded it
                     return "again"
-            else: # call function to check the node if it is not visited so if it visited delete it from fringe
-                print("poped visited (already)")
-                fringe.remove(x)
-        else: # if node level not less than the searching level delete the node
-            print("poped2")
-            visited_Node_check(x)
+                else:  # if node level not less than the searching level delete the node
+                    print("poped2")
+                    visited_Node_check(x)
+                    fringe.remove(x)
+        else: # call function to check the node if it is not visited so if it visited delete it from fringe
+            print("poped visited (already)")
             fringe.remove(x)
+
 
     print(f"len2 {len(fringe)}")
 
@@ -150,7 +152,7 @@ def searching_iterative():
             print("again")
 
         drawing_Game()
-        clock.tick(1)
+        clock.tick(30)
 
 # Importing the library
 import pygame
