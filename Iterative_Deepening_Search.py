@@ -72,7 +72,7 @@ def visited_Node_check(node):
     visited.append(node) # add node to visited list
 
     drawing_Game()
-    clock.tick(5)
+    clock.tick(1)
     return False
 
 def fringe_Check():
@@ -152,7 +152,7 @@ def searching_iterative():
             print("again")
 
         drawing_Game()
-        clock.tick(30)
+        clock.tick(1)
 
 # Importing the library
 import pygame
