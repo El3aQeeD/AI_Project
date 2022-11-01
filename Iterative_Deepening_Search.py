@@ -26,6 +26,7 @@ def drawing_Game():
 
 def expand_Node(node):
     global fringe
+    #LIFO = last in first out
     # add left
     if node.coloum - 1 >= 0:
         print("L")
@@ -82,14 +83,14 @@ def fringe_Check():
 
     for x in mylist:
         print(f"check lev {x.level} and curr lev {level}")
-         # if node level less than the searching level
+
         if visited_Node_check(x) == False: # call function to check the node if it is not visited
 
             if x == largeList[end_r][end_c]: # if node equal to goal postion return true
                 print("found it")
                 return True
-            else:
-                if x.level < level:# if node not equal the goal
+            else:# if node not equal the goal
+                if x.level < level:  # if node level less than the searching level
                     expand_Node(x) # call function to expand node
                     print("3alih eldor")
                     print(x.row)
