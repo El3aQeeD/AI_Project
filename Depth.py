@@ -149,13 +149,14 @@ while True:
         # check if user click the mouse button and we use it to know the Start and End of search
         if event.type == pygame.MOUSEBUTTONDOWN:
             # the user have only two clicks one for Start and the second one for End
-                ctClicks+=1
-                if ctClicks == 3:
-                    if Depth_Serching() == True:
-                        break
+
 
                 # check if user click the mouse button in the area of the board not outside
                 if pygame.mouse.get_pos()[1] < n*70 and pygame.mouse.get_pos()[0] < n*70:
+                    ctClicks += 1
+                    if ctClicks == 3:
+                        if Depth_Serching() == True:
+                            break
                     # tring to find the selected square that the user clicked on it and change its type to 1
                     for r in range(len(largeList)):
                         for c in range(n):
@@ -175,8 +176,6 @@ while True:
         if event.type == pygame.KEYDOWN:
             # check if user click the mouse button in the area of the board not outside
             if pygame.mouse.get_pos()[1] < n * 70 and pygame.mouse.get_pos()[0] < n * 70:
-                if ctStart < 17:
-                    ctStart += 1
                     # tring to find the selected square that the user clicked on it and change its type to 1
                     for r in range(len(largeList)):
                         for c in range(n):
@@ -186,9 +185,8 @@ while True:
                                 largeList[r][c].type = 2
                                 visited.append(largeList[r][c])
 
-                else:
 
-                    ctStart = 0
 
     # Drawing Squares
     drawing_Game()
+    #hello hos
