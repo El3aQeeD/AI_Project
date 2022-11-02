@@ -189,5 +189,4 @@ while True:
 
     # Drawing Squares
     drawing_Game()
-    #hello hos
-    #hello hany
+
