@@ -5,7 +5,7 @@ class CActor:
     wd=70 #width of the square
     type=0 # type 0 for normal square - 1 for start and end squares - 2 for walls that stops the search
     row=-1 #node row postion
-    coloum=-1 #node coloum postion
+    column=-1 #node coloum postion
     level=-1 # node level
 
 def drawing_Game():
@@ -28,35 +28,35 @@ def expand_Node(node):
     global fringe
     #LIFO = last in first out
     # add left
-    if node.coloum - 1 >= 0:
+    if node.column - 1 >= 0:
         print("L")
-        print(largeList[node.row][node.coloum - 1].row)
-        print(largeList[node.row][node.coloum - 1].coloum)
-        largeList[node.row][node.coloum - 1].level = node.level + 1
-        fringe.insert(0,largeList[node.row][node.coloum - 1])
+        print(largeList[node.row][node.column - 1].row)
+        print(largeList[node.row][node.column - 1].column)
+        largeList[node.row][node.column - 1].level = node.level + 1
+        fringe.insert(0, largeList[node.row][node.column - 1])
     # add down
     if node.row + 1 < n:
         print("d")
-        print(largeList[node.row + 1][node.coloum].row)
-        print(largeList[node.row + 1][node.coloum].coloum)
-        largeList[node.row + 1][node.coloum].level = node.level + 1
-        print(f"level node {largeList[node.row + 1][node.coloum].level}")
-        fringe.insert(0,largeList[node.row + 1][node.coloum])
+        print(largeList[node.row + 1][node.column].row)
+        print(largeList[node.row + 1][node.column].column)
+        largeList[node.row + 1][node.column].level = node.level + 1
+        print(f"level node {largeList[node.row + 1][node.column].level}")
+        fringe.insert(0, largeList[node.row + 1][node.column])
     # add right
-    if node.coloum + 1 < n:
+    if node.column + 1 < n:
         print("r")
-        print(largeList[node.row][node.coloum + 1].row)
-        print(largeList[node.row][node.coloum + 1].coloum)
-        largeList[node.row][node.coloum + 1].level = node.level + 1
-        fringe.insert(0,largeList[node.row][node.coloum + 1])
+        print(largeList[node.row][node.column + 1].row)
+        print(largeList[node.row][node.column + 1].column)
+        largeList[node.row][node.column + 1].level = node.level + 1
+        fringe.insert(0, largeList[node.row][node.column + 1])
     #add up
     if node.row -1 >= 0 :
         print("up")
 
-        print(largeList[node.row-1][node.coloum].row)
-        print(largeList[node.row - 1][node.coloum].coloum)
-        largeList[node.row - 1][node.coloum].level=node.level+1
-        fringe.insert(0,largeList[node.row-1][node.coloum])
+        print(largeList[node.row-1][node.column].row)
+        print(largeList[node.row - 1][node.column].column)
+        largeList[node.row - 1][node.column].level= node.level + 1
+        fringe.insert(0, largeList[node.row-1][node.column])
 
 
 
@@ -94,7 +94,7 @@ def fringe_Check():
                     expand_Node(x) # call function to expand node
                     print("3alih eldor")
                     print(x.row)
-                    print(x.coloum)
+                    print(x.column)
                     fringe.remove(x) # delete node after expanded it
                     return "again"
                 else:  # if node level not less than the searching level delete the node
@@ -124,7 +124,7 @@ def searching_iterative():
         for x in fringe:
 
             print(x.row)
-            print(x.coloum)
+            print(x.column)
 
         print("fringe ######")
 
@@ -171,7 +171,7 @@ for r in range(n):
         act.x= act.x + ( c * act.wd)
         act.y= act.y + ( r * act.ht)
         act.row=r
-        act.coloum=c
+        act.column=c
 
 
         thisList.append(act)
