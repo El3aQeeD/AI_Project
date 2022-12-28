@@ -15,6 +15,13 @@ import pygame
 import sys
 clock = pygame.time.Clock()
 
+def check_Goals(node):
+    for x in goalsList:
+        if node == x:
+            print("func is true")
+            return True
+    return False
+
 def drawing_Game():
     # Drawing Squares
     for x in largeList:
@@ -60,11 +67,7 @@ def BFS():
     while True:
         current_node = fringe.pop(0)
         print(current_node.row, ",", current_node.column)
-        if (current_node == largeList[end_r][end_c]):
-            print("Last")
-            print(current_node.row, ",", current_node.column)
-            print("lenth of visited is ", len(visited))
-            print("found goal")
+        if (check_Goals(current_node) == True):
             return True
             break
         if visited_Node_check_BFS(current_node) == True:
@@ -159,7 +162,7 @@ def fringe_Check_iterative():
 
         if visited_Node_check_iterative(x) == False:  # call function to check the node if it is not visited
 
-            if x == largeList[end_r][end_c]:  # if node equal to goal postion return true
+            if check_Goals(x) == True:  # if node equal to goal postion return true
                 print("found it")
                 return True
             else:  # if node not equal the goal
@@ -221,7 +224,7 @@ def searching_iterative():
             print("again")
 
         drawing_Game()
-        clock.tick(1)
+        clock.tick(5)
 
 ######################################################################################::::Depth
 
@@ -231,7 +234,7 @@ def Depth_Serching():
         if len(fringe)!=0:
             current_node=fringe.pop()#pop the last pushed node and save it in current_node
             print(current_node.row, ",", current_node.column)
-            if(current_node==largeList[end_r][end_c]):#check if the current_node(poped node)is the end or not
+            if check_Goals(current_node) == True:#check if the current_node(poped node)is the end or not
                 print("Last")
                 print(current_node.row, ",", current_node.column)
                 print("len",len(visited))
@@ -317,7 +320,6 @@ for r in range(n):
 
     largeList.append(thisList)
     thisList = []
-
 # Initializing Pygame
 pygame.init()
 SCREEN_HEIGHT = 570
@@ -342,11 +344,12 @@ level=0
 fringe=[]
 visited=[]
 tempVisited=[]
+goalsList=[]
 Search_Techniques=["BFS","Depth","iterative"]
-start_r=-1;
-start_c=-1;
-end_r=-1;
-end_c=-1;
+start_r=-1
+start_c=-1
+end_r=-1
+end_c=-1
 start_flag=0
 ctClicks=0
 # infinite loop to display the game
@@ -356,51 +359,54 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit(0)
+
         # check if user click the mouse button and we use it to know the Start and End of search
         if event.type == pygame.MOUSEBUTTONDOWN:
-            # the user have only two clicks one for Start and the second one for End
-                if ctClicks >= 2 and pygame.mouse.get_pos()[0] <= 750 and pygame.mouse.get_pos()[0] >= 600 and \
-                        pygame.mouse.get_pos()[1] >= 100 and pygame.mouse.get_pos()[1] <= 150 and start_flag==0:
-                    start_flag=1
-                    if BFS()==True:
-                        break
-                if ctClicks >= 2 and pygame.mouse.get_pos()[0] <= 750 and pygame.mouse.get_pos()[0] >= 600 and \
-                        pygame.mouse.get_pos()[1] >= 300 and pygame.mouse.get_pos()[1] <= 350 and start_flag==0:
-                        start_flag = 1
-                        searching_iterative()
+                if event.button == 3:
+                    print("right")
+                # the user have only two clicks one for Start and the second one for End
+                    if ctClicks >= 2 and pygame.mouse.get_pos()[0] <= 750 and pygame.mouse.get_pos()[0] >= 600 and \
+                            pygame.mouse.get_pos()[1] >= 100 and pygame.mouse.get_pos()[1] <= 150 and start_flag==0:
+                        start_flag=1
+                        if BFS()==True:
+                            break
+                    if ctClicks >= 2 and pygame.mouse.get_pos()[0] <= 750 and pygame.mouse.get_pos()[0] >= 600 and \
+                            pygame.mouse.get_pos()[1] >= 300 and pygame.mouse.get_pos()[1] <= 350 and start_flag==0:
+                            start_flag = 1
+                            searching_iterative()
 
-                if ctClicks >= 2 and pygame.mouse.get_pos()[0] <= 750 and pygame.mouse.get_pos()[0] >= 600 and \
-                        pygame.mouse.get_pos()[1] >= 200 and pygame.mouse.get_pos()[1] <= 250 and start_flag==0:
-                    start_flag = 1
-                    if Depth_Serching() == True:
-                        break
+                    if ctClicks >= 2 and pygame.mouse.get_pos()[0] <= 750 and pygame.mouse.get_pos()[0] >= 600 and \
+                            pygame.mouse.get_pos()[1] >= 200 and pygame.mouse.get_pos()[1] <= 250 and start_flag==0:
+                        start_flag = 1
+                        if Depth_Serching() == True:
+                            break
                 # check if user click the mouse button in the area of the board not outside
                 if pygame.mouse.get_pos()[1] < n*70 and pygame.mouse.get_pos()[0] < n*70:
                     ctClicks += 1
 
                     # tring to find the selected square that the user clicked on it and change its type to 1
-                    if ctClicks<=2:
-                        for r in range(len(largeList)):
-                            for c in range(n):
-                                if pygame.mouse.get_pos()[0] > largeList[r][c].x and pygame.mouse.get_pos()[0] < \
-                                        largeList[r][c].x + largeList[r][c].wd and pygame.mouse.get_pos()[1] > largeList[r][
-                                    c].y and pygame.mouse.get_pos()[1] < largeList[r][c].y + largeList[r][c].ht:
-                                    largeList[r][c].type = 1
-                                    if ctClicks == 1:
-                                        start_r = r
-                                        start_c = c
-                                        fringe.append(largeList[r][c])
-                                    if ctClicks == 2:
-                                        if largeList[r][c]!=largeList[start_r][start_c]:
-                                            end_r = r
-                                            end_c = c
-                                        else:ctClicks-=1
+
+                    for r in range(len(largeList)):
+                        for c in range(n):
+                            if pygame.mouse.get_pos()[0] > largeList[r][c].x and pygame.mouse.get_pos()[0] < \
+                                    largeList[r][c].x + largeList[r][c].wd and pygame.mouse.get_pos()[1] > largeList[r][
+                                c].y and pygame.mouse.get_pos()[1] < largeList[r][c].y + largeList[r][c].ht:
+                                largeList[r][c].type = 1
+                                if ctClicks == 1:
+                                    start_r = r
+                                    start_c = c
+                                    largeList[r][c].level = 0
+                                    fringe.append(largeList[r][c])
+                                if ctClicks >= 2:
+                                    if largeList[r][c]!=largeList[start_r][start_c]:
+                                        goalsList.append(largeList[r][c])
+                                    else:ctClicks-=1
 
         # check if user click any button and we use it to put walls
         if event.type == pygame.KEYDOWN:
             # check if user click the mouse button in the area of the board not outside
             if pygame.mouse.get_pos()[1] < n * 70 and pygame.mouse.get_pos()[0] < n * 70:
-                    # tring to find the selected square that the user clicked on it and change its type to 1
+                    # tring to find the selected square that the user clicked on it and change its type to 2
                     for r in range(len(largeList)):
                         for c in range(n):
                             if pygame.mouse.get_pos()[0] > largeList[r][c].x and pygame.mouse.get_pos()[0] < \

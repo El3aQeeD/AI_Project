@@ -5,8 +5,11 @@ class CActor:
     wd=70 #width of the square
     type=0 # type 0 for normal square - 1 for start and end squares - 2 for walls that stops the search
     row=-1 #node row postion
-    column=-1 #node coloum postion
+    coloum=-1 #node coloum postion
     level=-1 # node level
+    total_steps=0
+    total_row=0
+    total_coloum=0
 
 def drawing_Game():
     # Drawing Squares
@@ -26,43 +29,110 @@ def drawing_Game():
 
 def expand_Node(node):
     global fringe
-    #LIFO = last in first out
+
+    # add right
+    if node.coloum + 1 < n:
+        print("r")
+        print(largeList[node.row][node.coloum + 1].row)
+        print(largeList[node.row][node.coloum + 1].coloum)
+
+        value = largeList[node.row][node.coloum + 1].row - end_r
+        value2 = largeList[node.row][node.coloum + 1].coloum - end_c
+        total = value + value2
+        if total < 0:
+            total *= -1
+        for x in visited:
+            if x.type == 2:
+                if  x.coloum == largeList[node.row][node.coloum + 1].coloum:
+                    total += 4
+        largeList[node.row][node.coloum + 1].total_steps = total
+        fringe.insert(0, largeList[node.row][node.coloum + 1])
+
     # add left
-    if node.column - 1 >= 0:
+    if node.coloum - 1 >= 0:
         print("L")
-        print(largeList[node.row][node.column - 1].row)
-        print(largeList[node.row][node.column - 1].column)
-        largeList[node.row][node.column - 1].level = node.level + 1
-        fringe.insert(0, largeList[node.row][node.column - 1])
+        print(largeList[node.row][node.coloum - 1].row)
+        print(largeList[node.row][node.coloum - 1].coloum)
+        value=largeList[node.row][node.coloum - 1].row - end_r
+        value2= largeList[node.row][node.coloum - 1].coloum -end_c
+        total = value + value2
+        if total < 0:
+            total*=-1
+        for x in visited:
+            if x.type == 2:
+                if  x.coloum == largeList[node.row][node.coloum - 1].coloum:
+                    total += 4
+        largeList[node.row][node.coloum - 1].total_steps=total
+        fringe.insert(0,largeList[node.row][node.coloum - 1])
     # add down
     if node.row + 1 < n:
         print("d")
-        print(largeList[node.row + 1][node.column].row)
-        print(largeList[node.row + 1][node.column].column)
-        largeList[node.row + 1][node.column].level = node.level + 1
-        print(f"level node {largeList[node.row + 1][node.column].level}")
-        fringe.insert(0, largeList[node.row + 1][node.column])
-    # add right
-    if node.column + 1 < n:
-        print("r")
-        print(largeList[node.row][node.column + 1].row)
-        print(largeList[node.row][node.column + 1].column)
-        largeList[node.row][node.column + 1].level = node.level + 1
-        fringe.insert(0, largeList[node.row][node.column + 1])
+        print(largeList[node.row + 1][node.coloum].row)
+        print(largeList[node.row + 1][node.coloum].coloum)
+
+
+        value = largeList[node.row + 1][node.coloum].row - end_r
+        value2 = largeList[node.row + 1][node.coloum].coloum - end_c
+        total = value + value2
+        if total < 0:
+            total *= -1
+
+            for x in visited:
+                if x.type == 2:
+                    if  x.coloum == largeList[node.row + 1][node.coloum].coloum:
+                        total += 4
+        largeList[node.row + 1][node.coloum].total_steps=total
+        fringe.insert(0,largeList[node.row + 1][node.coloum])
+
     #add up
     if node.row -1 >= 0 :
         print("up")
 
-        print(largeList[node.row-1][node.column].row)
-        print(largeList[node.row - 1][node.column].column)
-        largeList[node.row - 1][node.column].level= node.level + 1
-        fringe.insert(0, largeList[node.row-1][node.column])
+        print(largeList[node.row-1][node.coloum].row)
+        print(largeList[node.row - 1][node.coloum].coloum)
+        value = largeList[node.row - 1][node.coloum].row - end_r
+        value2 = largeList[node.row - 1][node.coloum].coloum - end_c
+        total = value + value2
+        if total < 0:
+            total *= -1
+
+        for x in visited :
+            if x.type==2 :
+                if  x.coloum == largeList[node.row - 1][node.coloum].coloum :
+                    total+=4
+
+
+
+        largeList[node.row - 1][node.coloum].total_steps = total
+        fringe.insert(0,largeList[node.row-1][node.coloum])
+    sort_fringe_by_lower_cost()
+
+def sort_fringe_by_lower_cost():
+    global fringe
+    for x in fringe:
+        for k in range(1,len(fringe)):
+            if fringe[k - 1].total_steps > fringe[k].total_steps:
+                temp = fringe[k]
+                fringe[k] = fringe[k - 1]
+                fringe[k - 1] = temp
+
+            if fringe[k - 1].total_steps == fringe[k].total_steps:
+                value=fringe[k].row - end_r
+                value2=fringe[k-1].row - end_r
+                if value < 0 :
+                    value *= -1
+                if value2 < 0:
+                    value2 *= -1
+                if value < value2 :
+                    temp = fringe[k]
+                    fringe[k] = fringe[k - 1]
+                    fringe[k - 1] = temp
 
 
 
 
 def visited_Node_check(node):
-    global visited,ctColorStart
+    global visited
     for x in visited: # loop to check if the node that received from fringe check is visited before
         if node == x:
             return True
@@ -82,7 +152,6 @@ def fringe_Check():
     mylist=fringe.copy() # make a copy from fringe list to let me delete any node without any problems in index and looping in mylist
 
     for x in mylist:
-        print(f"check lev {x.level} and curr lev {level}")
 
         if visited_Node_check(x) == False: # call function to check the node if it is not visited
 
@@ -90,23 +159,18 @@ def fringe_Check():
                 print("found it")
                 return True
             else:# if node not equal the goal
-                if x.level < level:  # if node level less than the searching level
-                    expand_Node(x) # call function to expand node
+
+                    expand_Node(x)
+                    # call function to expand node
                     print("3alih eldor")
                     print(x.row)
-                    print(x.column)
-                    fringe.remove(x) # delete node after expanded it
-
+                    print(x.coloum)
+                    #fringe.remove(x) # delete node after expanded it
                     return "again"
-                else:  # if node level not less than the searching level delete the node
 
-                    print("poped2")
-                    visited_Node_check(x)
-                    fringe.remove(x)
         else: # call function to check the node if it is not visited so if it visited delete it from fringe
             print("poped visited (already)")
             fringe.remove(x)
-
 
 
     print(f"len2 {len(fringe)}")
@@ -120,38 +184,21 @@ def fringe_Check():
 
 
 def searching_iterative():
-    global fringe,level, visited,ctColorStart
+    global fringe, visited
     # loop for checking fringe until find the goal
     while True:
-        print(f"fringe of level{level} and visited count {len(visited)}######")
+
         for x in fringe:
 
             print(x.row)
-            print(x.column)
+            print(x.coloum)
 
         print("fringe ######")
 
         fringeValue=fringe_Check() #varibale to get the return from function fringe_check
         if fringeValue == True : # if the var equal true that mean it reached the goal and should stop searching
             break
-        elif fringeValue == False: # if the var equal false it means it will increase the level of searching to try reach the goal
-            level+=1
-
-            for x in largeList: # loop over the 2d array to return all colors to its original color and not visited color
-                for c in range(n):
-                    if x[c].type==3:
-                        x[c].type=0
-
-            fringe=[] #clear the fringe because it will start a new level of search and wants to start from the start point
-            fringe.append(largeList[start_r][start_c]) # adding the start point that the user selected to be the first node we search from
-            visited=[] # clear the visited list because it will start a new level of search and wants to start from the start point
-            visited=tempVisited.copy() # visited list takes copy from temp list that always has the walls the user entered and it may be empty if the user did not select any walls
-            print(f"level {level} ####")
-            largeList[start_r][start_c].level=0 # return the start point to level 0 as it should always be
-            largeList[start_r][start_c].type=1 # return the start point color to red
-
         else: #it means the fringe have nodes that wants to be checked
-
 
             print("again")
 
@@ -174,7 +221,7 @@ for r in range(n):
         act.x= act.x + ( c * act.wd)
         act.y= act.y + ( r * act.ht)
         act.row=r
-        act.column=c
+        act.coloum=c
 
 
         thisList.append(act)
@@ -196,11 +243,9 @@ startAndend_color = (255,0,0)
 wall_color=(100,50,0)
 visited_node_color=(0, 255, 0)
 #custom varibale
-ctColorStart=0
 tempVisited=[]
 ctBreak=0
 ctStart=0
-level=0
 fringe=[]
 visited=[]
 start_r=-1
